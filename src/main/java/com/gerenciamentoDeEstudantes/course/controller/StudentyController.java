@@ -1,5 +1,7 @@
 package com.gerenciamentoDeEstudantes.course.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gerenciamentoDeEstudantes.course.dto.MessageResponseDTO;
+import com.gerenciamentoDeEstudantes.course.dto.request.StudentDTO;
 import com.gerenciamentoDeEstudantes.course.model.entities.Student;
 import com.gerenciamentoDeEstudantes.course.services.StudentService;
 
@@ -25,7 +28,7 @@ public class StudentyController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public MessageResponseDTO createStudent(@RequestBody Student obj) {
+	public MessageResponseDTO createStudent(@RequestBody @Valid StudentDTO obj) {
 		return studentService.create(obj);
 	}
 }

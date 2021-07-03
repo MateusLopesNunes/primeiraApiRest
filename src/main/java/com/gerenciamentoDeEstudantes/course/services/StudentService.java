@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gerenciamentoDeEstudantes.course.dto.MessageResponseDTO;
+import com.gerenciamentoDeEstudantes.course.dto.request.StudentDTO;
+import com.gerenciamentoDeEstudantes.course.mapper.StudentMapper;
 import com.gerenciamentoDeEstudantes.course.model.entities.Student;
 import com.gerenciamentoDeEstudantes.course.repository.StudentRepository;
 
@@ -11,6 +13,8 @@ import com.gerenciamentoDeEstudantes.course.repository.StudentRepository;
 public class StudentService {
 
 	private StudentRepository studentRepository;
+	
+	private StudentMapper studentMapper = StudentMapper.INSTANCE;
 
 	@Autowired
 	public StudentService(StudentRepository studentRepository) {
@@ -19,12 +23,13 @@ public class StudentService {
 		//o uso em construtor é interesante para testes unitarios
 	}
 
-	public MessageResponseDTO create(Student obj) {
-		Student student = studentRepository.save(obj);
+	public MessageResponseDTO create(StudentDTO obj) {
+		Student studentConverted = studentMapper.toModel(obj);
+		Student student = studentRepository.save(studentConverted);
 		return MessageResponseDTO.builder().message("registered student, id: " + student.getPlate()).build();
 		// adciona uma estudante ao banco, e retorna a mensagem acima
 		// o builder foi usado para estanciar automaticamente a classe
 		// MessageResponseDTO;
 		// importante para testes unitarios
-	}	
+	}
 }
