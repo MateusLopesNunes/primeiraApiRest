@@ -1,5 +1,8 @@
 package com.gerenciamentoDeEstudantes.course.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +34,10 @@ public class StudentService {
 		// o builder foi usado para estanciar automaticamente a classe
 		// MessageResponseDTO;
 		// importante para testes unitarios
+	}
+	
+	public List<StudentDTO> listAll() {
+		List<Student> studAll = studentRepository.findAll();
+		return studAll.stream().map(studentMapper::toDTO).collect(Collectors.toList());
 	}
 }
