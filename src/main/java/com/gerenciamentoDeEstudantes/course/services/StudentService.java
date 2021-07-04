@@ -45,9 +45,9 @@ public class StudentService {
 		return studAll.stream().map(studentMapper::toDTO).collect(Collectors.toList());
 	}
 	
-	public StudentDTO findByPlate(Long plate) throws PersonNotFoundExceptions {
+	public StudentDTO findByPlate(Long plate) throws StudentNotFoundExceptions {
 		Student student = studentRepository.findById(plate)
-				.orElseThrow(() -> new PersonNotFoundExceptions(plate));
+				.orElseThrow(() -> new StudentNotFoundExceptions(plate));
 		//findById retorna um optional.
 		//Retorna uma entidade, dps da validação do Optional.
 		return studentMapper.toDTO(student);
@@ -59,7 +59,10 @@ public class StudentService {
 		return MessageResponseDTO.builder().message("update sucefull").build();
 	}
 
-	public MessageResponseDTO deleteStudent(Long plate) {
+	public MessageResponseDTO deleteStudent(Long plate) throws StudentNotFoundExceptions {
+		studentRepository.findById(plate)
+		.orElseThrow(() -> new StudentNotFoundExceptions(plate));
+		
 		studentRepository.deleteById(plate);
 		return MessageResponseDTO.builder().message("Delete sucefull").build();
 	}
