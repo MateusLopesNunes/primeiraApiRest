@@ -1,10 +1,14 @@
 package com.gerenciamentoDeEstudantes.course.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.gerenciamentoDeEstudantes.course.dto.MessageResponseDTO;
 import com.gerenciamentoDeEstudantes.course.dto.request.StudentDTO;
@@ -40,4 +44,25 @@ public class StudentService {
 		List<Student> studAll = studentRepository.findAll();
 		return studAll.stream().map(studentMapper::toDTO).collect(Collectors.toList());
 	}
+	
+	public StudentDTO findByPlate(Long plate) throws PersonNotFoundExceptions {
+		Student student = studentRepository.findById(plate)
+				.orElseThrow(() -> new PersonNotFoundExceptions(plate));
+		//findById retorna um optional.
+		//Retorna uma entidade, dps da validação do Optional.
+		return studentMapper.toDTO(student);
+	}
+
+	public MessageResponseDTO updateStudent(StudentDTO obj) {
+		Student stdentConverted = studentMapper.toModel(obj);
+		Student student = studentRepository.save(stdentConverted);
+		return MessageResponseDTO.builder().message("update sucefull").build();
+	}
+
+	public MessageResponseDTO deleteStudent(Long plate) {
+		studentRepository.deleteById(plate);
+		return MessageResponseDTO.builder().message("Delete sucefull").build();
+	}
+	
+	
 }
