@@ -59,12 +59,11 @@ public class StudentService {
 		return MessageResponseDTO.builder().message("update sucefull").build();
 	}
 
-	public MessageResponseDTO deleteStudent(Long plate) throws StudentNotFoundExceptions {
+	public void deleteById(Long plate) throws StudentNotFoundExceptions {
 		studentRepository.findById(plate)
 		.orElseThrow(() -> new StudentNotFoundExceptions(plate));
 		
 		studentRepository.deleteById(plate);
-		return MessageResponseDTO.builder().message("Delete sucefull").build();
 	}
 	
 	

@@ -59,7 +59,7 @@ public class StudentyController {
 	
 	@DeleteMapping("/{plate}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public MessageResponseDTO deleteStudent(@RequestBody @Valid Long plate) throws StudentNotFoundExceptions {
-		return studentService.deleteStudent(plate);
+	public void deleteById(@PathVariable Long plate) throws StudentNotFoundExceptions {
+		studentService.deleteById(plate);
 	}
 }
