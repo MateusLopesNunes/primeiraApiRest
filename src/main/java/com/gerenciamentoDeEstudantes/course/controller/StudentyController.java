@@ -52,9 +52,9 @@ public class StudentyController {
 		return studentService.findByPlate(plate);
 	}
 	
-	@PutMapping
-	public MessageResponseDTO updateStudent(@RequestBody @Valid StudentDTO obj) {
-		return studentService.updateStudent(obj);
+	@PutMapping("/{plate}")
+	public MessageResponseDTO updateStudent(@PathVariable Long plate, @RequestBody @Valid StudentDTO obj) {
+		return studentService.updateStudent(plate, obj);
 	}
 	
 	@DeleteMapping("/{plate}")

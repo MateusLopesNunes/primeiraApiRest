@@ -31,9 +31,9 @@ public class StudentService {
 	}
 
 	public MessageResponseDTO create(StudentDTO obj) {
-		Student studentConverted = studentMapper.toModel(obj);
-		Student student = studentRepository.save(studentConverted);
-		return MessageResponseDTO.builder().message("registered student, id: " + student.getPlate()).build();
+		Student CreateStudent = studentMapper.toModel(obj);
+		studentRepository.save(CreateStudent);
+		return messageResponse(obj.getPlate(), "Registered student with plate: ");
 		// adciona uma estudante ao banco, e retorna a mensagem acima
 		// o builder foi usado para estanciar automaticamente a classe
 		// MessageResponseDTO;
@@ -46,25 +46,32 @@ public class StudentService {
 	}
 	
 	public StudentDTO findByPlate(Long plate) throws StudentNotFoundExceptions {
-		Student student = studentRepository.findById(plate)
-				.orElseThrow(() -> new StudentNotFoundExceptions(plate));
+		Student FindStudent = verifyIfExists(plate);
+
 		//findById retorna um optional.
 		//Retorna uma entidade, dps da validação do Optional.
-		return studentMapper.toDTO(student);
+		return studentMapper.toDTO(FindStudent);
 	}
 
-	public MessageResponseDTO updateStudent(StudentDTO obj) {
-		Student stdentConverted = studentMapper.toModel(obj);
-		Student student = studentRepository.save(stdentConverted);
-		return MessageResponseDTO.builder().message("update sucefull").build();
+	public MessageResponseDTO updateStudent(Long plate, StudentDTO obj) {
+		new StudentNotFoundExceptions(plate);
+		Student studentUpdate = studentMapper.toModel(obj);
+		studentRepository.save(studentUpdate);
+		return messageResponse(obj.getPlate(), "Update student with plate: ");
 	}
 
 	public void deleteById(Long plate) throws StudentNotFoundExceptions {
-		studentRepository.findById(plate)
-		.orElseThrow(() -> new StudentNotFoundExceptions(plate));
+		verifyIfExists(plate);
 		
 		studentRepository.deleteById(plate);
 	}
 	
+	private Student verifyIfExists(Long plate) throws StudentNotFoundExceptions {
+		return studentRepository.findById(plate)
+		.orElseThrow(() -> new StudentNotFoundExceptions(plate));
+	}
 	
+	private MessageResponseDTO messageResponse(Long plate, String message) {
+		return MessageResponseDTO.builder().message(message + plate).build();
+	}
 }
