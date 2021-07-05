@@ -1,6 +1,5 @@
 package com.gerenciamentoDeEstudantes.course.dto.request;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,8 +8,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CPF;
-
-import com.gerenciamentoDeEstudantes.course.model.entities.University;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
