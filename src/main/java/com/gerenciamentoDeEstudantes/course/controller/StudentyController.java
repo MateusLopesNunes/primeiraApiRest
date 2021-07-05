@@ -22,16 +22,14 @@ import com.gerenciamentoDeEstudantes.course.model.entities.Student;
 import com.gerenciamentoDeEstudantes.course.services.StudentNotFoundExceptions;
 import com.gerenciamentoDeEstudantes.course.services.StudentService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/student")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StudentyController {
 	
 	private StudentService studentService;
-	
-	@Autowired
-	public StudentyController(StudentService studentService) {
-		this.studentService = studentService;
-	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

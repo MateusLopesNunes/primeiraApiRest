@@ -16,19 +16,23 @@ import com.gerenciamentoDeEstudantes.course.mapper.StudentMapper;
 import com.gerenciamentoDeEstudantes.course.model.entities.Student;
 import com.gerenciamentoDeEstudantes.course.repository.StudentRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+//A anotação acima é usada para criar um construtor com injeção de dependencia usando o lombok
 public class StudentService {
 
 	private StudentRepository studentRepository;
 	
 	private StudentMapper studentMapper = StudentMapper.INSTANCE;
 
-	@Autowired
+	/*@Autowired
 	public StudentService(StudentRepository studentRepository) {
 		this.studentRepository = studentRepository;
 		//@Autowired injeta dependencia no repositorio de estudantes
 		//o uso em construtor é interesante para testes unitarios
-	}
+	}*/
 
 	public MessageResponseDTO create(StudentDTO obj) {
 		Student CreateStudent = studentMapper.toModel(obj);
