@@ -51,7 +51,7 @@ public class StudentyController {
 	}
 	
 	@PutMapping("/{plate}")
-	public MessageResponseDTO updateStudent(@PathVariable Long plate, @RequestBody @Valid StudentDTO obj) {
+	public MessageResponseDTO updateStudent(@PathVariable Long plate, @RequestBody @Valid StudentDTO obj) throws StudentNotFoundExceptions {
 		return studentService.updateStudent(plate, obj);
 	}
 	

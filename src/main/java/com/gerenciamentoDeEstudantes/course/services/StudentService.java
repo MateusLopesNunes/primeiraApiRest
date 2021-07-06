@@ -1,14 +1,10 @@
 package com.gerenciamentoDeEstudantes.course.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.gerenciamentoDeEstudantes.course.dto.MessageResponseDTO;
 import com.gerenciamentoDeEstudantes.course.dto.request.StudentDTO;
@@ -36,8 +32,8 @@ public class StudentService {
 
 	public MessageResponseDTO create(StudentDTO obj) {
 		Student CreateStudent = studentMapper.toModel(obj);
-		studentRepository.save(CreateStudent);
-		return messageResponse(obj.getPlate(), "Registered student with plate: ");
+		Student savedStudent = studentRepository.save(CreateStudent);
+		return messageResponse(savedStudent.getPlate(), "Registered student with plate: ");
 		// adciona uma estudante ao banco, e retorna a mensagem acima
 		// o builder foi usado para estanciar automaticamente a classe
 		// MessageResponseDTO;
@@ -57,11 +53,11 @@ public class StudentService {
 		return studentMapper.toDTO(FindStudent);
 	}
 
-	public MessageResponseDTO updateStudent(Long plate, StudentDTO obj) {
-		new StudentNotFoundExceptions(plate);
+	public MessageResponseDTO updateStudent(Long plate, StudentDTO obj) throws StudentNotFoundExceptions {
+		verifyIfExists(plate);
 		Student studentUpdate = studentMapper.toModel(obj);
-		studentRepository.save(studentUpdate);
-		return messageResponse(obj.getPlate(), "Update student with plate: ");
+		Student savedStudent = studentRepository.save(studentUpdate);
+		return messageResponse(savedStudent.getPlate(), "Update student with plate: ");
 	}
 
 	public void deleteById(Long plate) throws StudentNotFoundExceptions {
